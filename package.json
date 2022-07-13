@@ -12,8 +12,10 @@
     "lintfix": "npm run lint:js -- --fix"
   },
   "dependencies": {
+    "@nuxtjs/style-resources": "^1.2.1",
     "core-js": "^3.19.3",
     "nuxt": "^2.15.8",
+    "vee-validate": "^4.6.1",
     "vue": "^2.6.14",
     "vue-server-renderer": "^2.6.14",
     "vue-template-compiler": "^2.6.14",
@@ -25,6 +27,8 @@
     "@nuxtjs/eslint-module": "^3.0.2",
     "eslint": "^8.4.1",
     "eslint-plugin-nuxt": "^3.1.0",
-    "eslint-plugin-vue": "^8.2.0"
+    "eslint-plugin-vue": "^8.2.0",
+    "sass": "^1.53.0",
+    "sass-loader": "^10.3.1"
   }
 }
