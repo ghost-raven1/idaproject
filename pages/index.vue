@@ -1,6 +1,6 @@
 <template>
   <div class="app">
-    <div v-click-outside="toggleForm" class="app__header">
+    <div class="app__header">
       <h2 class="app__header-title">
         Добавление товара
       </h2>
