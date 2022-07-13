@@ -202,4 +202,9 @@ export default {
     }
   }
 }
+@include _480 {
+  .app__header-title {
+    font-size: 14px;
+  }
+}
 </style>

@@ -59,6 +59,11 @@ export default {
       opacity: 1;
       position: absolute;
     }
+    @include _480 {
+      .card__btn {
+        margin: -12px 250px;
+      }
+    }
   }
 
   &__img {
@@ -104,6 +109,11 @@ export default {
     font-size: 24px;
     line-height: 30px;
     color: $black;
+  }
+}
+@include _480 {
+  .card {
+    width: 270px;
   }
 }
 </style>
