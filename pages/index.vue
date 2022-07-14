@@ -7,9 +7,7 @@
       <button class="app__header-btn app__header-btn-show" @click="toggleForm">
         Показать форму
       </button>
-      <button class="app__header-btn">
-        По умолчанию
-      </button>
+      <CtmDD v-model="currFilter" :items="filters" placeholder="по умолчанию" type="sort" />
     </div>
     <div class="app__body">
       <transition v-if="isShowForm" name="fade" class="app__body-form" appear>
@@ -17,9 +15,9 @@
           <LazyCtmForm/>
         </div>
       </transition>
-      <div class="app__body-cards">
-        <LazyCtmCard v-for="(item, i) in products" :key="i" :card-data="item"/>
-      </div>
+      <TransitionGroup name="list" class="app__body-cards" tag="div" appear>
+        <LazyCtmCard v-for="(item, i) in products" :key="i" :card-data="addIdx(item, i)" @deleteCard="deleteCard" />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -30,64 +28,71 @@ export default {
   data () {
     return {
       isShowForm: true,
+      currFilter: '',
+      filters: [
+        'по умолчанию',
+        'по цене мин',
+        'по цене макс',
+        'по наименованию'
+      ],
       products: [
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 1',
+          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          price: '10 pyб'
+        },
+        {
+          img: require('@/assets/img/img.png'),
+          title: 'Наименование товара 2',
+          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          price: '1000000 pyб'
+        },
+        {
+          img: require('@/assets/img/img.png'),
+          title: 'Наименование товара 3',
+          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
+          price: '100000 pyб'
+        },
+        {
+          img: require('@/assets/img/img.png'),
+          title: 'Наименование товара 4',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 5',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 6',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 7',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 8',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 9',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
-          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          price: '10000 pyб'
-        },
-        {
-          img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
-          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          price: '10000 pyб'
-        },
-        {
-          img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
-          desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
-          price: '10000 pyб'
-        },
-        {
-          img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 10',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         }
@@ -95,6 +100,19 @@ export default {
     }
   },
   methods: {
+    deleteCard (e) {
+      const checkedIndex = this.products.indexOf(e)
+      if (checkedIndex !== -1) {
+        this.products.splice(checkedIndex, 1)
+      }
+    },
+    addIdx (item, i) {
+      item.id = i
+      return item
+    },
+    setCurrentProduct (e) {
+      this.products.push(e)
+    },
     toggleForm () {
       this.isShowForm = !this.isShowForm
     }
@@ -152,6 +170,17 @@ export default {
   }
 }
 
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  transform: translateX(30px);
+}
+
 .fade-enter-from {
   opacity: 0;
   z-index: 10;
@@ -200,6 +229,11 @@ export default {
         visibility: visible;
       }
     }
+  }
+}
+@include _480 {
+  .app__header-title {
+    font-size: 14px;
   }
 }
 </style>
