@@ -7,9 +7,7 @@
       <button class="app__header-btn app__header-btn-show" @click="toggleForm">
         Показать форму
       </button>
-      <button class="app__header-btn">
-        По умолчанию
-      </button>
+      <CtmDD v-model="currFilter" :items="filters" placeholder="по умолчанию" type="sort" />
     </div>
     <div class="app__body">
       <transition v-if="isShowForm" name="fade" class="app__body-form" appear>
@@ -30,6 +28,13 @@ export default {
   data () {
     return {
       isShowForm: true,
+      currFilter: '',
+      filters: [
+        'по умолчанию',
+        'по цене мин',
+        'по цене макс',
+        'по наименованию'
+      ],
       products: [
         {
           img: require('@/assets/img/img.png'),
@@ -96,8 +101,6 @@ export default {
   },
   methods: {
     deleteCard (e) {
-      // eslint-disable-next-line no-console
-      console.log('delete', e)
       const checkedIndex = this.products.indexOf(e)
       if (checkedIndex !== -1) {
         this.products.splice(checkedIndex, 1)
