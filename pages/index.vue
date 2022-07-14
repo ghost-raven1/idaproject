@@ -14,12 +14,12 @@
     <div class="app__body">
       <transition v-if="isShowForm" name="fade" class="app__body-form" appear>
         <div class="app__body-form">
-          <LazyCtmForm/>
+          <LazyCtmForm @currentProduct="setCurrentProduct" />
         </div>
       </transition>
-      <div class="app__body-cards">
-        <LazyCtmCard v-for="(item, i) in products" :key="i" :card-data="item"/>
-      </div>
+      <TransitionGroup name="list" class="app__body-cards" tag="div" appear>
+        <LazyCtmCard v-for="item in products" :key="item" :card-data="item" />
+      </TransitionGroup>
     </div>
   </div>
 </template>
@@ -95,6 +95,9 @@ export default {
     }
   },
   methods: {
+    setCurrentProduct (e) {
+      this.products.push(e)
+    },
     toggleForm () {
       this.isShowForm = !this.isShowForm
     }
@@ -150,6 +153,17 @@ export default {
       flex-wrap: wrap;
     }
   }
+}
+
+.list-move,
+.list-enter-active,
+.list-leave-active {
+  transition: all 0.5s ease;
+}
+
+.list-enter-from,
+.list-leave-to {
+  transform: translateX(30px);
 }
 
 .fade-enter-from {

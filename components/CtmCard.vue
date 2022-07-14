@@ -1,23 +1,26 @@
 <template>
-  <div class="card">
-    <CtmBtn class="card__btn" mode="delete"/>
-    <img
-      class="card__img"
-      :src="cardData.img"
-      :alt="cardData.title"
-    >
-    <div class="card__container">
-      <h3 class="card__title">
-        {{ cardData.title }}
-      </h3>
-      <p class="card__desc">
-        {{ cardData.desc }}
-      </p>
-      <span class="card__price">
-        {{ cardData.price }}
-      </span>
+
+    <div class="card">
+      <CtmBtn class="card__btn" mode="img" />
+      <div class="card__img-wrap">
+        <img
+          class="card__img"
+          :src="cardData.img"
+          :alt="cardData.title"
+        >
+      </div>
+      <div class="card__container">
+        <h3 class="card__title">
+          {{ cardData.title }}
+        </h3>
+        <p class="card__desc">
+          {{ cardData.desc }}
+        </p>
+        <div class="card__price">
+          {{ cardData.price }}
+        </div>
+      </div>
     </div>
-  </div>
 </template>
 
 <script>
@@ -67,7 +70,14 @@ export default {
   }
 
   &__img {
+    width: 100%;
+    height: 100%;
     object-fit: cover;
+    object-position: 0 0;
+    &-wrap {
+      width: 100%;
+      height: 210px;
+    }
   }
 
   &__btn {
@@ -100,6 +110,8 @@ export default {
     line-height: 20px;
     color: $black;
     margin-bottom: 32px;
+    height: 85px;
+    overflow: auto;
   }
 
   &__price {

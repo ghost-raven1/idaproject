@@ -34,8 +34,8 @@ export default {
   ],
 
   plugins: [
-    // { src: '@plugins/vee-validate.js' }
-    { src: '@plugins/directives.js' }
+    { src: '@plugins/directives.js' },
+    { src: '@plugins/vee-validate.js' }
   ],
 
   components: true,

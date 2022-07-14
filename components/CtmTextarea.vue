@@ -1,5 +1,13 @@
 <template>
-  <div class="textarea">
+  <ValidationProvider
+    v-slot="{errors}"
+    tag="div"
+    class="textarea"
+    :rules="rules"
+    :name="name"
+    :mode="validationMode"
+    slim
+  >
     <label
       class="textarea__label"
       for="desc"
@@ -8,28 +16,116 @@
     </label>
     <textarea
       id="desc"
-      rows="5"
-      class="textarea__field"
+      ref="input"
+      :rows="rows"
+      :value="value"
+      :autocomplete="autocomplete"
+      :disabled="disabled"
       :placeholder="placeholder"
+      class="textarea__field"
+      @input="input"
+      @keyup.enter="enter"
+      @keypress.enter="onEnterPress"
+      @focus="$emit('focus')"
+      @blur="$emit('blur')"
     />
-  </div>
+    <div
+      v-if="!isHideError"
+      class="textarea__err"
+    >
+      {{ errorMessage (errors[0]) }}
+    </div>
+  </ValidationProvider>
 </template>
 
 <script>
 export default {
   name: 'CtmTextarea',
   props: {
+    name: {
+      type: String,
+      default: ''
+    },
+    autoFocus: {
+      type: Boolean,
+      default: () => false
+    },
+    onEnterPress: {
+      type: Function,
+      default: () => {}
+    },
+    value: {
+      type: [String, Number],
+      default: ''
+    },
+    disabled: {
+      type: Boolean,
+      default: false
+    },
+    autocomplete: {
+      type: String,
+      default: 'on'
+    },
+    isHideError: {
+      type: Boolean,
+      default: false
+    },
+    rules: {
+      type: [String, Array, Object],
+      description: 'Vee validate validation rules',
+      default: ''
+    },
+    validationMode: {
+      type: String,
+      default: 'aggressive'
+    },
     rows: {
-      type: Number,
+      type: [Number, String],
       default: 2
     },
     label: {
       type: String,
       default: ''
     },
+    isRequired: {
+      type: Boolean,
+      default: false
+    },
     placeholder: {
       type: String,
       default: ''
+    }
+  },
+  mounted () {
+    this.focus()
+  },
+  methods: {
+    errorMessage (e) {
+      if (e === 'min') {
+        return 'Введенное значение меньше допустимого'
+      } else if (e === 'required') {
+        return 'Обязательное поле'
+      } else if (e === 'max') {
+        return 'Введенное значение больше допустимого'
+      } else if (e === 'alpha_num') {
+        return 'Нечисловое значение'
+      }
+    },
+    focus () {
+      if (this.autoFocus) { this.$refs.input.focus() }
+    },
+    enter ($event) {
+      this.$emit('enter', $event.target.value)
+    },
+    input ($event) {
+      this.$emit('input', $event.target.value)
+      if (this.selector) {
+        this.$emit('selector', $event.target.value)
+      }
+    },
+    clear () {
+      this.$emit('input', '')
+      this.$emit('clear', event)
     }
   }
 }
@@ -39,6 +135,13 @@ export default {
 .textarea {
   display: flex;
   flex-direction: column;
+
+  &__err {
+    margin-top: 5px;
+    font-family: Source Sans Pro, sans-serif;
+    font-size: 12px;
+    color: $pink;
+  }
 
   &__label {
     font-family: Source Sans Pro, sans-serif;
@@ -60,6 +163,10 @@ export default {
     border: 1px solid transparent;
     resize: none;
     transition: .5s;
+
+    &_red {
+      border: 1px solid $pink;
+    }
 
     &:focus {
       border: 1px solid $blue;

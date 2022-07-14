@@ -1,36 +1,67 @@
 <template>
-  <form class="app__body-form form">
-    <LazyCtmInput
-      class="form__input"
-      is-required="true"
-      label="Наименование товара"
-      placeholder="Введите наименование товара"
-    />
-    <LazyCtmTextarea
-      class="form__input"
-      rows="5"
-      label="Наименование товара"
-      placeholder="Введите описание товара"
-    />
-    <LazyCtmInput
-      class="form__input"
-      is-required="true"
-      label="Ссылка на изображение товара"
-      placeholder="Введите ссылку"
-    />
-    <LazyCtmInput
-      class="form__input"
-      is-required="true"
-      label="Цена товара"
-      placeholder="Введите цену"
-    />
-    <LazyCtmBtn title="Добавить товар"/>
-  </form>
+  <validation-observer
+    ref="validate"
+    v-slot="{handleSubmit, passed }"
+  >
+    <form class="app__body-form form" @submit.prevent="handleSubmit(setProduct)">
+      <LazyCtmInput
+        v-model="product.title"
+        class="form__input"
+        is-required="true"
+        rules="required|min:3|max:20"
+        label="Наименование товара"
+        placeholder="Введите наименование товара"
+      />
+      <LazyCtmTextarea
+        v-model="product.desc"
+        rules="min:10|max:600"
+        class="form__input"
+        rows="5"
+        label="Описание товара"
+        placeholder="Введите описание товара"
+      />
+      <LazyCtmInput
+        v-model="product.img"
+        class="form__input"
+        rules="required"
+        is-required="true"
+        label="Ссылка на изображение товара"
+        placeholder="Введите ссылку"
+      />
+      <LazyCtmInput
+        v-model="product.price"
+        class="form__input"
+        rules="required|min:1|alpha_num"
+        is-required="true"
+        label="Цена товара"
+        placeholder="Введите цену"
+      />
+      <LazyCtmBtn :class="{ passed: '.form__btn_active' }" mode="text" title="Добавить товар" :disabled="!passed" />
+    </form>
+  </validation-observer>
 </template>
 
 <script>
 export default {
-  name: 'CtmForm'
+  name: 'CtmForm',
+  data () {
+    return {
+      product: {
+        title: '',
+        desc: '',
+        img: '',
+        price: ''
+      }
+    }
+  },
+  methods: {
+    setProduct () {
+      this.product.price = this.product.price + ' руб'
+      // eslint-disable-next-line no-console
+      console.log(this.product)
+      this.$emit('currentProduct', this.product)
+    }
+  }
 }
 </script>
 
@@ -43,8 +74,11 @@ export default {
   background-color: $white;
   padding: 24px;
   width: 332px;
-  height: 440px;
+  min-height: 440px;
   position: fixed;
+  &__btn_active {
+    background-color: #0083C7;
+  }
 
   &__input {
     margin-bottom: 16px;
