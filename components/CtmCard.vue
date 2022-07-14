@@ -1,26 +1,25 @@
 <template>
-
-    <div class="card">
-      <CtmBtn class="card__btn" mode="img" />
-      <div class="card__img-wrap">
-        <img
-          class="card__img"
-          :src="cardData.img"
-          :alt="cardData.title"
-        >
-      </div>
-      <div class="card__container">
-        <h3 class="card__title">
-          {{ cardData.title }}
-        </h3>
-        <p class="card__desc">
-          {{ cardData.desc }}
-        </p>
-        <div class="card__price">
-          {{ cardData.price }}
-        </div>
+  <div class="card">
+    <CtmBtn class="card__btn" mode="img" @click="deleteCard"/>
+    <div class="card__img-wrap">
+      <img
+        class="card__img"
+        :src="cardData.img"
+        :alt="cardData.title"
+      >
+    </div>
+    <div class="card__container">
+      <h3 class="card__title">
+        {{ cardData.title }}
+      </h3>
+      <p class="card__desc">
+        {{ cardData.desc }}
+      </p>
+      <div class="card__price">
+        {{ cardData.price }}
       </div>
     </div>
+  </div>
 </template>
 
 <script>
@@ -31,6 +30,11 @@ export default {
       type: Object,
       default: () => {
       }
+    }
+  },
+  methods: {
+    deleteCard () {
+      this.$emit('deleteCard', this.cardData)
     }
   }
 }

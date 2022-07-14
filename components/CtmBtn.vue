@@ -1,5 +1,5 @@
 <template>
-  <button class="btn" :class="btnClass" :disabled="disabled">
+  <button class="btn" :class="btnClass" :disabled="disabled" @click="$emit('click')">
     <span
       v-if="mode === 'text'"
       class="btn__title"

@@ -57,8 +57,6 @@ export default {
   methods: {
     setProduct () {
       this.product.price = this.product.price + ' руб'
-      // eslint-disable-next-line no-console
-      console.log(this.product)
       this.$emit('currentProduct', this.product)
     }
   }

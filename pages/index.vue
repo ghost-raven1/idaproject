@@ -18,7 +18,7 @@
         </div>
       </transition>
       <TransitionGroup name="list" class="app__body-cards" tag="div" appear>
-        <LazyCtmCard v-for="item in products" :key="item" :card-data="item" />
+        <LazyCtmCard v-for="(item, i) in products" :key="i" :card-data="addIdx(item, i)" @deleteCard="deleteCard" />
       </TransitionGroup>
     </div>
   </div>
@@ -33,61 +33,61 @@ export default {
       products: [
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 1',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 2',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 3',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 4',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 5',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 6',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 7',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 8',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 9',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         },
         {
           img: require('@/assets/img/img.png'),
-          title: 'Наименование товара',
+          title: 'Наименование товара 10',
           desc: 'Довольно-таки интересное описание товара в несколько строк. Довольно-таки интересное описание товара в несколько строк',
           price: '10000 pyб'
         }
@@ -95,6 +95,18 @@ export default {
     }
   },
   methods: {
+    deleteCard (e) {
+      // eslint-disable-next-line no-console
+      console.log('delete', e)
+      const checkedIndex = this.products.indexOf(e)
+      if (checkedIndex !== -1) {
+        this.products.splice(checkedIndex, 1)
+      }
+    },
+    addIdx (item, i) {
+      item.id = i
+      return item
+    },
     setCurrentProduct (e) {
       this.products.push(e)
     },
